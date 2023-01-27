@@ -7,4 +7,5 @@ urlpatterns = [
     path('', workouts_views.index.as_view(), name='home'),
     path('api/workouts/', workouts_views.workout_list),
     path('api/workouts/<int:pk>/', workouts_views.workout_detail),
+    path('api/workouts/<str:timestamp>/', workouts_views.workout_date),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
