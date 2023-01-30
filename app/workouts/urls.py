@@ -8,4 +8,5 @@ urlpatterns = [
     path('api/workouts/', workouts_views.workout_list),
     path('api/workouts/<int:pk>/', workouts_views.workout_detail),
     path('api/workouts/<str:timestamp>/', workouts_views.workout_date),
+    path('api/workouts/<str:title>/', workouts_views.workout_title),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

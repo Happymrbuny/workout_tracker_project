@@ -99,19 +99,35 @@ def workout_detail(request, pk):
         return JsonResponse({'message': 'Workout was deleted successfully!'},
                             status=status.HTTP_204_NO_CONTENT)
 
-@api_view(['GET', 'DELETE'])
+@api_view(['GET'])
 def workout_date(request, timestamp):
+    
+    if request.method == 'GET':
+        workouts = Workout.objects.all()
+
+        timestamp = request.GET.get('timestamp', None)
+        if timestamp is not None:
+            workouts = workouts.filter(timestamp__icontains=timestamp)
+
+        workouts_serializer = WorkoutSerializer(workouts, many=True)
+        return JsonResponse(workouts_serializer.data, safe=False)
+        # 'safe=False' for objects serialization
+
+@api_view(['GET'])
+def workout_title(request, title):
     try:
-        workout = Workout.objects.get(timestamp=timestamp)
+        workout = Workout.objects.get(title=title)
     except Workout.DoesNotExist:
         return JsonResponse({'message': 'No exercises on this day.'},
                             status=status.HTTP_404_NOT_FOUND)
 
     if request.method == 'GET':
+        workouts = Workout.objects.filter(title=title)
+
+        title = request.GET.get('title', None)
+        
+        if title is not None:
+            workouts = workouts.filter(title__icontains=title)
+
         workout_serializer = WorkoutSerializer(workout)
         return JsonResponse(workout_serializer.data)
-
-    elif request.method == 'DELETE':
-        workout.delete()
-        return JsonResponse({'message': 'Exercises deleted successfully!'},
-                            status=status.HTTP_204_NO_CONTENT)
