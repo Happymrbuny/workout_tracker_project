@@ -101,9 +101,8 @@ def workout_detail(request, pk):
 
 @api_view(['GET'])
 def workout_date(request, timestamp):
-    
     if request.method == 'GET':
-        workouts = Workout.objects.all()
+        workouts = Workout.objects.all().filter(timestamp=timestamp)
 
         timestamp = request.GET.get('timestamp', None)
         if timestamp is not None:
@@ -115,19 +114,26 @@ def workout_date(request, timestamp):
 
 @api_view(['GET'])
 def workout_title(request, title):
-    try:
-        workout = Workout.objects.get(title=title)
-    except Workout.DoesNotExist:
-        return JsonResponse({'message': 'No exercises on this day.'},
-                            status=status.HTTP_404_NOT_FOUND)
-
-    if request.method == 'GET':
-        workouts = Workout.objects.filter(title=title)
+       if request.method == 'GET':
+        workouts = Workout.objects.all().filter(title=title)
 
         title = request.GET.get('title', None)
-        
         if title is not None:
             workouts = workouts.filter(title__icontains=title)
 
-        workout_serializer = WorkoutSerializer(workout)
-        return JsonResponse(workout_serializer.data)
+        workouts_serializer = WorkoutSerializer(workouts, many=True)
+        return JsonResponse(workouts_serializer.data, safe=False)
+        # 'safe=False' for objects serialization
+
+@api_view(['GET'])
+def workout_group(request, musclegroup):
+       if request.method == 'GET':
+        workouts = Workout.objects.all().filter(musclegroup=musclegroup)
+
+        musclegroup = request.GET.get('musclegroup', None)
+        if musclegroup is not None:
+            workouts = workouts.filter(musclegroup__icontains=musclegroup)
+
+        workouts_serializer = WorkoutSerializer(workouts, many=True)
+        return JsonResponse(workouts_serializer.data, safe=False)
+        # 'safe=False' for objects serialization

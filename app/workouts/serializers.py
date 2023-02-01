@@ -5,4 +5,4 @@ from workouts.models import Workout
 class WorkoutSerializer(serializers.ModelSerializer):
     class Meta:
         model = Workout
-        fields = ('id', 'title', 'reps', 'weight', 'timestamp')
+        fields = ('id', 'title', 'reps', 'weight', 'timestamp', 'musclegroup')

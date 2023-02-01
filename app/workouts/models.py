@@ -8,4 +8,5 @@ class Workout(models.Model):
     reps = models.PositiveIntegerField()
     weight = models.PositiveIntegerField()
     timestamp = models.DateField(auto_now_add=True)
+    musclegroup = models.CharField(max_length=70, blank=False, default="")
 
