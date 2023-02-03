@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_list_or_404
 from django.http.response import JsonResponse
 from rest_framework.parsers import JSONParser
 from rest_framework import status
@@ -101,6 +101,8 @@ def workout_detail(request, pk):
 
 @api_view(['GET'])
 def workout_date(request, timestamp):
+    workouts = get_list_or_404(Workout, timestamp=timestamp)
+
     if request.method == 'GET':
         workouts = Workout.objects.all().filter(timestamp=timestamp)
 
@@ -114,7 +116,9 @@ def workout_date(request, timestamp):
 
 @api_view(['GET'])
 def workout_title(request, title):
-       if request.method == 'GET':
+    workouts = get_list_or_404(Workout, title=title)
+
+    if request.method == 'GET':
         workouts = Workout.objects.all().filter(title=title)
 
         title = request.GET.get('title', None)
@@ -127,7 +131,9 @@ def workout_title(request, title):
 
 @api_view(['GET'])
 def workout_group(request, musclegroup):
-       if request.method == 'GET':
+    workouts = get_list_or_404(Workout, musclegroup=musclegroup)
+
+    if request.method == 'GET':
         workouts = Workout.objects.all().filter(musclegroup=musclegroup)
 
         musclegroup = request.GET.get('musclegroup', None)
