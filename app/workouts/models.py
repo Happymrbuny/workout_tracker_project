@@ -10,3 +10,6 @@ class Workout(models.Model):
     timestamp = models.DateField(auto_now_add=True)
     musclegroup = models.CharField(max_length=70, blank=False, default="")
 
+    def __str__(self):
+        return self.title
+

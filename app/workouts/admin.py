@@ -1,3 +1,9 @@
 from django.contrib import admin
+from .models import Workout
 
-# Register your models here.
+class WorkoutAdmin(admin.ModelAdmin):
+    list_display = ('title', 'timestamp')
+    ordering = ('timestamp',)
+    search_fields = ('title',)
+
+admin.site.register(Workout, WorkoutAdmin)
