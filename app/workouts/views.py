@@ -14,7 +14,6 @@ from rest_framework.decorators import api_view
 # def index(request):
 #     return render(request, "workouts/index.html")
 
-
 def index(request):
     print("------------------------- I AM HERE")
     queryset = Workout.objects.all()
